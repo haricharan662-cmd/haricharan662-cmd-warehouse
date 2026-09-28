@@ -41,14 +41,15 @@ const ring = document.getElementById('cursor-ring');
 let rx = 0, ry = 0, mx = 0, my = 0;
 
 document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  dot.style.left = mx + 'px';
-  dot.style.top  = my + 'px';
+  mx = e.clientX;
+  my = e.clientY;
 });
 
 (function lerp() {
   rx += (mx - rx) * 0.12;
   ry += (my - ry) * 0.12;
+  dot.style.left = mx + 'px';
+  dot.style.top  = my + 'px';
   ring.style.left = rx + 'px';
   ring.style.top  = ry + 'px';
   requestAnimationFrame(lerp);
@@ -88,8 +89,6 @@ export function DotRingCursor() {
 
     const move = e => {
       pos.current = { x: e.clientX, y: e.clientY };
-      dotRef.current.style.left = e.clientX + 'px';
-      dotRef.current.style.top  = e.clientY + 'px';
     };
     document.addEventListener('mousemove', move);
 
@@ -97,6 +96,8 @@ export function DotRingCursor() {
     const lerp = () => {
       ring.current.x += (pos.current.x - ring.current.x) * 0.12;
       ring.current.y += (pos.current.y - ring.current.y) * 0.12;
+      dotRef.current.style.left = pos.current.x + 'px';
+      dotRef.current.style.top  = pos.current.y + 'px';
       ringRef.current.style.left = ring.current.x + 'px';
       ringRef.current.style.top  = ring.current.y + 'px';
       raf = requestAnimationFrame(lerp);
@@ -169,14 +170,15 @@ const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 const cur = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
 function onMove(e: MouseEvent) {
-  pos.x = e.clientX; pos.y = e.clientY;
-  dotEl.value!.style.left = e.clientX + 'px';
-  dotEl.value!.style.top  = e.clientY + 'px';
+  pos.x = e.clientX;
+  pos.y = e.clientY;
 }
 
 function loop() {
   cur.x += (pos.x - cur.x) * 0.12;
   cur.y += (pos.y - cur.y) * 0.12;
+  dotEl.value!.style.left = pos.x + 'px';
+  dotEl.value!.style.top  = pos.y + 'px';
   ringEl.value!.style.left = cur.x + 'px';
   ringEl.value!.style.top  = cur.y + 'px';
   raf = requestAnimationFrame(loop);
@@ -237,8 +239,8 @@ onUnmounted(() => {
       const dot  = document.getElementById('cd') as HTMLElement;
       const ring = document.getElementById('cr') as HTMLElement;
       let rx = 0, ry = 0, mx = 0, my = 0;
-      document.onmousemove = e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; };
-      const lerp = () => { rx += (mx - rx) * .12; ry += (my - ry) * .12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(lerp); };
+      document.onmousemove = e => { mx = e.clientX; my = e.clientY; };
+      const lerp = () => { rx += (mx - rx) * .12; ry += (my - ry) * .12; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(lerp); };
       lerp();
       return {
         enter: () => { dot.style.width = '6px'; dot.style.height = '6px'; ring.style.width = '52px'; ring.style.height = '52px'; ring.style.borderColor = '#60a5fa'; },
